@@ -1,7 +1,7 @@
-# ITmitSchmiss
+# IT mit Schmiss
 
-Quelltexte für meine Lernvideos auf [itmitschmiss.video/youtube](https://itmitschmiss.video/youtube).
-Primär habe ich zwei Java-Kurse für die Oberstufe im Angebot, die
+Hier findet Ihr die Quelltexte für meine Lernvideos auf [itmitschmiss.video/youtube](https://itmitschmiss.video/youtube).
+Primär habe ich zwei Java-Kurse für die Oberstufe im Angebot, und zwar:
 
 1. Informatik mit Java für die [Stufe 10/Einführungsphase](https://itmitschmiss.video/yteph)
 2. Informatik mit Java für die [Stufe 11/Qualifiktionsphase 1](https://itmitschmiss.video/ytq1)
