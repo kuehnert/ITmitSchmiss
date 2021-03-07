@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Schuelerverwaltung {
     Schueler[] schueler; // Instantvariable
     int anzahl;
