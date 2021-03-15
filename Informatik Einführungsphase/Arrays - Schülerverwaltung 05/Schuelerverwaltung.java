@@ -99,30 +99,14 @@ public class Schuelerverwaltung {
         System.out.print("Nachname: ");
         neuer.setNachname(tastatur.nextLine());
 
-        int alter = -1; // Gültigkeitsbereich von Variablen
-        do {
-            System.out.print("Alter: ");
-            String eingabe = tastatur.nextLine();
-            try {
-                alter = Integer.parseInt(eingabe);
-            } catch (NumberFormatException e) {
-                System.out.println("Ungültige Eingabe '" + eingabe + "'. Bitte gib eine Zahl zwischen "
-                        + Schueler.MIN_AGE + " und " + Schueler.MAX_AGE + " ein.");
-            }
-        } while (alter < Schueler.MIN_AGE || alter > Schueler.MAX_AGE);
+        System.out.print("Alter: ");
+        String eingabe = tastatur.nextLine();
+        int alter = Integer.parseInt(eingabe);
         neuer.setAlter(alter);
 
-        double durchschnitt = -1.0;
-        do {
-            System.out.print("Durchschnitt: ");
-            String eingabe = tastatur.nextLine();
-            try {
-                durchschnitt = Double.parseDouble(eingabe);
-            } catch (NumberFormatException e) {
-                System.out
-                        .println("Ungültige Eingabe. Bitte gib eine Kommzahl mit Punkt als Trennzeichen ein, z.B. 2.3");
-            }
-        } while (durchschnitt < 1.0 || durchschnitt > 4.0);
+        System.out.print("Durchschnitt: ");
+        eingabe = tastatur.nextLine();
+        double durchschnitt = Double.parseDouble(eingabe);
         neuer.setDurchschnitt(durchschnitt);
 
         System.out.println("Dieser Schüler wird der Liste hinzugefügt:");
