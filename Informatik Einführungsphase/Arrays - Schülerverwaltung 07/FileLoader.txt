@@ -1,0 +1,14 @@
+Beutlin,Frodo,20,1.0
+Mouse,Mickey,20,1.0
+Potter,Hermine,13,1.0
+Duck,Tick,12,1.1
+Potter,Harry,15,1.1
+Duck,Dagobert,11,1.3
+Gamdschie,Samweis,25,1.3
+Mouse,Minnie,26,1.3
+Duck,Daisy,15,1.4
+Duck,Track,17,1.4
+Bock,Hans,26,2.1
+Duck,Donald,17,2.1
+Klock,Hans,26,2.1
+Duck,Trick,13,2.3
