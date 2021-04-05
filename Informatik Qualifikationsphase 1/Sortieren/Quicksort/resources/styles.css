@@ -1,0 +1,46 @@
+body {
+    background-color: #333;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.6rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    line-height: 2rem;
+}
+
+tr.partition {
+    border-top: 2px solid gray;
+}
+
+td {
+    text-align: center;
+}
+
+td.pivot {
+    font-weight: bold;
+    color: lime;
+}
+
+td.lower {
+    color: rgb(80, 101, 31);
+}
+
+td.higher {
+    color: rgb(46, 120, 163);
+}
+
+td.left::before {
+    content: "→ ";
+}
+
+td.right::after {
+    content: " ←";
+}
+
+td.outside {
+    font-weight: lighter;
+    color: #444;
+}
