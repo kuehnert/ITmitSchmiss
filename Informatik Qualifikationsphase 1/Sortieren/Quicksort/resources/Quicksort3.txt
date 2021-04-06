@@ -1,25 +1,16 @@
-package sorters;
-
-public class MeinQuicksort extends Sorter {
-    public MeinQuicksort() {
-        super();
-    }
-
-    public MeinQuicksort(int[] a) {
-        super(a);
-    }
-
     private int partition(int l, int r) {
         printPartition();
+
         oLeft = left = l;
         oRight = right = r;
-        pivotIndex = (left+right)/2;
+        pivotIndex = left;
         pivotValue = a[pivotIndex];
+        left += 1;
 
         printLine();
 
         while (true) {
-            while (left < right && a[left] < pivotValue) {
+            while (left < right && a[left] <= pivotValue) {
                 left += 1;
                 printLine();
             }
@@ -31,9 +22,8 @@ public class MeinQuicksort extends Sorter {
 
             if (left < right) {
                 swap(left, right);
-            } else {
+            } else
                 break;
-            }
         }
 
         // Swap pivot into place
@@ -48,8 +38,7 @@ public class MeinQuicksort extends Sorter {
         if (left < right) {
             int pivot = partition(left, right);
 
-            quicksort(left, pivot);
+            quicksort(left, pivot - 1);
             quicksort(pivot + 1, right);
         }
     }
-}

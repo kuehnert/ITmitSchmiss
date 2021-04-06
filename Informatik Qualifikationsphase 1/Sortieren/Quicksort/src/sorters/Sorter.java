@@ -1,9 +1,11 @@
 package sorters;
 
-import exporters.ANSIExporter;
 import exporters.Exporter;
 import exporters.NullExporter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public abstract class Sorter {
@@ -49,6 +51,11 @@ public abstract class Sorter {
         this.debug = debug;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public boolean check() {
         if (isSuccessful()) {
             System.out.print(".");
@@ -88,13 +95,10 @@ public abstract class Sorter {
         }
     }
 
-    public void debug() {
+    public String debug() {
         quicksort(true);
-        System.out.println(exporter.getLog());
-
-        System.out.print("\nBefore : " + Arrays.toString(original));
-        System.out.println("\nAfter  : " + Arrays.toString(a));
-        System.out.print("Correct: " + Arrays.toString(sorted) + " " + successMark());
+        return String.format("Before: %s\nAfter  : %s\nCorrect: %s %s", Arrays.toString(original), Arrays.
+                toString(a), Arrays.toString(sorted), successMark());
     }
 
     private String successMark() {
@@ -153,7 +157,8 @@ public abstract class Sorter {
     }
 
     protected void swap(int i, int j) {
-        if (i == j) return;
+        if (i == j)
+            return;
 
         if (debug) {
             exporter.logSwap(i, j);
@@ -190,5 +195,16 @@ public abstract class Sorter {
 
     private String fingerprint() {
         return String.format("%d,%d,%d,%d,%d", oLeft, oRight, pivotIndex, left, right);
+    }
+
+    public String getCode() {
+        try {
+            String filename = "/" + getName() + ".txt";
+            // System.out.println("Trying to load " + filename);
+            InputStream in = Sorter.class.getResourceAsStream(filename);
+            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (NullPointerException | IOException e) {
+            return "Hat nicht geklappt. :(";
+        }
     }
 }

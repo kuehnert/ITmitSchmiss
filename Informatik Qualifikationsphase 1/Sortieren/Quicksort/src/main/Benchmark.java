@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sorters.*;
+import utils.ArrayMaker;
 
 /**
  * main.Benchmark Misst und vergleicht die Dauer von x Sortiervorgängen in den
@@ -19,7 +20,7 @@ public class Benchmark {
         }
 
         for (int i = 0; i < NUM_TESTS; i++) {
-            int[] a = StressTest.generateRandom(TEST_SIZE);
+            int[] a = ArrayMaker.generateRandom(TEST_SIZE);
 
             for (Sorter sorter : sorters) {
                 sorter.benchmark(Arrays.copyOf(a, a.length));
