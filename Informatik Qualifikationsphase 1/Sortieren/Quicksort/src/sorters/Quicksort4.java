@@ -1,12 +1,14 @@
 package sorters;
 
+import utils.Logger;
+
 public class Quicksort4 extends Sorter {
-    public Quicksort4() {
-        super();
+    public Quicksort4(Logger logger) {
+        super(logger);
     }
 
-    public Quicksort4(int[] a) {
-        super(a);
+    public Quicksort4(int[] a, Logger logger) {
+        super(a, logger);
     }
 
     private int partition(int l, int r) {

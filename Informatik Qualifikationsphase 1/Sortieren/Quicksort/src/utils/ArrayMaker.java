@@ -27,9 +27,7 @@ public class ArrayMaker {
     public static int[] fromString(String s) {
         // Remove everything that is not a digit pr comma from String
         // to avoid number format exceptions
-        System.out.println(s);
         s = s.replaceAll("[^\\d,]", "");
-        System.out.println(s);
 
         // Split String at commas into String array with each number in a part
         String[] parts = s.split(",");

@@ -1,14 +1,16 @@
-package main;
+package console;
 
 import sorters.Quicksort2;
 import sorters.Sorter;
 import utils.ArrayMaker;
+import utils.Logger;
 
 public class StressTest {
     public static final int NUM_TESTS = 500;
     public static final int TEST_SIZE = 10_000;
 
-    public static void stressTest(Sorter sorter) {
+    public static void stressTest(Sorter sorter, Logger logger) {
+        logger.printf("Stress testing method %s with sorting %d arrays of %d elements each:\n", sorter, NUM_TESTS, TEST_SIZE);
         sorter.setDebug(false);
 
         for (int i = 0; i < NUM_TESTS; i++) {
@@ -20,7 +22,8 @@ public class StressTest {
     }
 
     public static void main(String[] args) {
-        Sorter s = new Quicksort2();
-        stressTest(s);
+        Logger logger = new ConsoleLogger();
+        Sorter s = new Quicksort2(logger);
+        stressTest(s, logger);
     }
 }

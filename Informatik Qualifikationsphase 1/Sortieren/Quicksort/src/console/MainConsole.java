@@ -1,4 +1,4 @@
-package main;
+package console;
 
 import exporters.ANSIExporter;
 import exporters.HTMLExporter;
@@ -8,24 +8,18 @@ import utils.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class Menu {
-    public static final String VERSION = "1.0.0";
+public class MainConsole {
     public static final int EXPORT_ANSI = 1;
     public static final int EXPORT_HTML = 2;
-
-    private final ShowSorter show = new ShowSorter();
+    private final Logger logger = new ConsoleLogger();
+    private final DemoSorter show = new DemoSorter(logger);
     private final ArrayMaker arrayMaker = new ArrayMaker();
     private int exporter_value = EXPORT_HTML;
 
-    public Menu() {
-        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
-    }
-
     public static void main(String[] args) {
-        new Menu().showMenu();
+        new MainConsole().showMenu();
     }
 
     private Sorter chooseSorter() {
@@ -68,7 +62,8 @@ public class Menu {
 
 
     private void showMenu() {
-        System.out.printf(Colors.CLEAR + "Willkommen beim Quicksort-Demonstrator (v%s)\n", VERSION);
+        System.out.print(Colors.CLEAR);
+        System.out.println(Vars.WELCOME);
         System.out.println("Hier hast Du folgende Möglichkeiten:");
         Sorter sorter = null;
         boolean weiter = true;
@@ -102,11 +97,11 @@ public class Menu {
                     break;
                 case '2':
                     sorter = chooseSorter();
-                    StressTest.stressTest(sorter);
+                    StressTest.stressTest(sorter, logger);
                     System.out.println("\nFertig.");
                     break;
                 case '3':
-                    Benchmark.runBenchmarks(show.getSorters());
+                    Benchmark.runBenchmarks(show.getSorters(), logger);
                     break;
                 case '4':
                     exporter_value = EXPORT_ANSI;

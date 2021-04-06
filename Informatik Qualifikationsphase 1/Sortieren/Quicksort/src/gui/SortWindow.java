@@ -1,55 +1,53 @@
 package gui;
 
+import console.Benchmark;
+import console.DemoSorter;
+import console.StressTest;
 import exporters.HTMLExporter;
-import javafx.application.Platform;
-import main.Benchmark;
-import main.ShowSorter;
-import main.StressTest;
 import sorters.Sorter;
 import utils.ArrayMaker;
 import utils.DemoArray;
+import utils.Vars;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 
 public class SortWindow extends JFrame {
+    private final DemoSorter demoSorter;
+    private final ArrayMaker arrayMaker = new ArrayMaker();
     private JPanel pMain;
     private JEditorPane epSource;
     private JComboBox cbSorter;
     private JButton bStressTest;
     private JButton bBenchmark;
     private JButton bDemo;
-    private JTextArea taLog;
+    private LoggerBox taLog;
     private JScrollPane spWebView;
     private JScrollPane spSource;
     private JEditorPane epDemo;
     private JScrollPane spDemo;
     private JComboBox cbArrays;
     private JTextField tfSelectedArray;
-
-    private final ShowSorter showSorter;
-    private final ArrayMaker arrayMaker = new ArrayMaker();
     private Sorter selectedSorter;
 
     public SortWindow() throws HeadlessException {
         super();
-        setTitle("Quicksort Demo");
+        setTitle(Vars.TITLE);
         add(pMain);
-        setSize(800, 600);
+
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(size.width*4/5, size.height*4/5);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        taLog.println(Vars.WELCOME);
+
         cbArrays.setModel(new DefaultComboBoxModel(arrayMaker.getArrays()));
 
-        showSorter = new ShowSorter();
-        cbSorter.setModel(new DefaultComboBoxModel(showSorter.getSorters().toArray()));
-        // PrintStream printStream = new PrintStream(new CustomOutputStream(taLog), true, StandardCharsets.UTF_8);
-        // System.setOut(printStream);
-        // System.setErr(printStream);
+        demoSorter = new DemoSorter(taLog);
+        cbSorter.setModel(new DefaultComboBoxModel(demoSorter.getSorters().toArray()));
 
         // Set sample arrays in combo box and select the first one
         cbArrays.addActionListener(new ActionListener() {
@@ -77,14 +75,18 @@ public class SortWindow extends JFrame {
         bDemo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Demoing " + selectedSorter);
+                taLog.clear();
+                taLog.println("Demoing " + selectedSorter);
                 selectedSorter.setExporter(new HTMLExporter(selectedSorter));
                 String s = tfSelectedArray.getText();
                 int[] arrayToSort = ArrayMaker.fromString(s);
                 selectedSorter.setArray(arrayToSort);
                 s = DemoArray.toString(arrayToSort);
                 tfSelectedArray.setText(s);
-                selectedSorter.debug();
+
+                String result = selectedSorter.debug();
+                taLog.println(result);
+
                 String out = selectedSorter.getExporter().getLog();
                 epDemo.setText(out);
             }
@@ -94,7 +96,8 @@ public class SortWindow extends JFrame {
         bStressTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StressTest.stressTest(selectedSorter);
+                taLog.clear();
+                StressTest.stressTest(selectedSorter, taLog);
             }
         });
 
@@ -102,7 +105,8 @@ public class SortWindow extends JFrame {
         bBenchmark.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Benchmark.runBenchmarks(showSorter.getSorters());
+                taLog.clear();
+                Benchmark.runBenchmarks(demoSorter.getSorters(), taLog);
             }
         });
     }

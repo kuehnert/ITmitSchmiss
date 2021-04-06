@@ -2,6 +2,7 @@ package sorters;
 
 import exporters.Exporter;
 import exporters.NullExporter;
+import utils.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,12 +25,14 @@ public abstract class Sorter {
     protected long duration;
     protected Exporter exporter;
     protected String[] previous;
+    protected Logger logger;
 
-    protected Sorter() {
-        this(null);
+    protected Sorter(Logger logger) {
+        this(null, logger);
     }
 
-    protected Sorter(int[] a) {
+    protected Sorter(int[] a, Logger logger) {
+        this.logger = logger;
         this.name = this.getClass().getSimpleName();
         this.id = name.charAt(name.length() - 1);
         this.debug = false;
@@ -58,10 +61,10 @@ public abstract class Sorter {
 
     public boolean check() {
         if (isSuccessful()) {
-            System.out.print(".");
+            logger.print(".");
             return true;
         } else {
-            System.out.println("ERROR:");
+            logger.println("ERROR:");
             debug();
             return false;
         }
@@ -200,7 +203,6 @@ public abstract class Sorter {
     public String getCode() {
         try {
             String filename = "/" + getName() + ".txt";
-            // System.out.println("Trying to load " + filename);
             InputStream in = Sorter.class.getResourceAsStream(filename);
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         } catch (NullPointerException | IOException e) {

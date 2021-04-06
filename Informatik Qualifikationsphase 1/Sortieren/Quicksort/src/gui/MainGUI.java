@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-public class Main implements Runnable {
+public class MainGUI implements Runnable {
     @Override
     public void run() {
         JFrame window = new SortWindow();
@@ -10,6 +10,6 @@ public class Main implements Runnable {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Main());
+        SwingUtilities.invokeLater(new MainGUI());
     }
 }

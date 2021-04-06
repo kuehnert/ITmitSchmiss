@@ -1,26 +1,30 @@
-package main;
+package console;
 
 import sorters.Sorter;
 import utils.ArrayMaker;
 import utils.ClassFinder;
+import utils.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowSorter {
+public class DemoSorter {
     private List<Sorter> sorters;
+    private Logger logger;
 
-    public ShowSorter() {
+    public DemoSorter(Logger logger) {
+        this.logger = logger;
         findClasses();
     }
 
     public static void main(String[] args) {
-        ShowSorter show = new ShowSorter();
+        Logger l = new ConsoleLogger();
+        DemoSorter show = new DemoSorter(l);
         ArrayMaker arrayMaker = new ArrayMaker();
 
         show.debugArray(show.getSorters().get(0), arrayMaker.getArrays()[0].getArray());
-        System.out.println("\n\nFiniss!");
+        l.println("\n\nFiniss!");
     }
 
     public List<Sorter> getSorters() {
@@ -38,7 +42,7 @@ public class ShowSorter {
                     continue;
                 }
 
-                sorters.add((Sorter) clas.getDeclaredConstructor().newInstance());
+                sorters.add((Sorter) clas.getDeclaredConstructor(Logger.class).newInstance(logger));
             }
         } catch (ClassNotFoundException | InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

@@ -117,7 +117,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="5e376" class="javax.swing.JTextArea" binding="taLog">
+                      <component id="d2b" class="gui.LoggerBox" binding="taLog">
                         <constraints/>
                         <properties>
                           <editable value="false"/>
@@ -125,9 +125,6 @@
                           <text value=""/>
                           <wrapStyleWord value="true"/>
                         </properties>
-                        <clientProperties>
-                          <html.disable class="java.lang.Boolean" value="false"/>
-                        </clientProperties>
                       </component>
                     </children>
                   </scrollpane>
