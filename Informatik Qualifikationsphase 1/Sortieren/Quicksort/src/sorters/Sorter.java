@@ -110,6 +110,7 @@ public abstract class Sorter {
 
     public void prepareBenchmark() {
         duration = 0;
+        exporter = new NullExporter(this);
     }
 
     public void benchmark(int[] a) {
@@ -182,22 +183,6 @@ public abstract class Sorter {
 
     protected void printLine() {
         exporter.logLine();
-    }
-
-    private void checkInfiniteLoop() {
-        String f = fingerprint();
-        for (String prev : previous) {
-            if (f.equals(prev)) {
-                throw new RuntimeException("Infinite Loop in " + getName() + "!");
-            }
-        }
-
-        previous[1] = previous[0];
-        previous[0] = f;
-    }
-
-    private String fingerprint() {
-        return String.format("%d,%d,%d,%d,%d", oLeft, oRight, pivotIndex, left, right);
     }
 
     public String getCode() {

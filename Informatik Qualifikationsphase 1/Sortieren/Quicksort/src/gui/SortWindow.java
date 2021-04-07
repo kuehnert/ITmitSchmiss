@@ -3,20 +3,27 @@ package gui;
 import console.Benchmark;
 import console.DemoSorter;
 import console.StressTest;
+import exporters.Exporter;
 import exporters.HTMLExporter;
 import sorters.Sorter;
 import utils.ArrayMaker;
 import utils.DemoArray;
+import utils.FileReadWrite;
 import utils.Vars;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class SortWindow extends JFrame {
     private final DemoSorter demoSorter;
-    private final ArrayMaker arrayMaker = new ArrayMaker();
     private JPanel pMain;
     private JEditorPane epSource;
     private JComboBox cbSorter;
@@ -24,12 +31,12 @@ public class SortWindow extends JFrame {
     private JButton bBenchmark;
     private JButton bDemo;
     private LoggerBox taLog;
-    private JScrollPane spWebView;
-    private JScrollPane spSource;
     private JEditorPane epDemo;
-    private JScrollPane spDemo;
     private JComboBox cbArrays;
     private JTextField tfSelectedArray;
+    private JButton bSave;
+    private JSplitPane spHorizontal;
+    private JSplitPane spVertical;
     private Sorter selectedSorter;
 
     public SortWindow() throws HeadlessException {
@@ -37,13 +44,30 @@ public class SortWindow extends JFrame {
         setTitle(Vars.TITLE);
         add(pMain);
 
+        // Load font from resources
+        InputStream is = SortWindow.class.getResourceAsStream("Cascadia Code.ttf");
+        try {
+            Font codeFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            epSource.setFont(codeFont);
+            epDemo.setFont(codeFont);
+            taLog.setFont(codeFont);
+        } catch (IOException | FontFormatException e) {
+            System.out.println("Unable to load font. Whatever.");
+            // no matter
+        }
+
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(size.width*4/5, size.height*4/5);
+        size = new Dimension(size.width * 3 / 5, size.height * 3 / 5);
+        setSize(size);
+        spVertical.setDividerLocation(size.height * 2 / 3);
+        spHorizontal.setDividerLocation(size.width / 3 - 100);
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         taLog.println(Vars.WELCOME);
 
+        ArrayMaker arrayMaker = new ArrayMaker();
         cbArrays.setModel(new DefaultComboBoxModel(arrayMaker.getArrays()));
 
         demoSorter = new DemoSorter(taLog);
@@ -55,6 +79,7 @@ public class SortWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String s = cbArrays.getSelectedItem().toString();
                 tfSelectedArray.setText(s);
+                bSave.setEnabled(false);
             }
         });
 
@@ -67,6 +92,7 @@ public class SortWindow extends JFrame {
                 selectedSorter = (Sorter) cbSorter.getSelectedItem();
                 String sorterCode = selectedSorter.getCode();
                 epSource.setText(sorterCode);
+                bSave.setEnabled(false);
             }
         });
         cbSorter.setSelectedIndex(0);
@@ -89,6 +115,9 @@ public class SortWindow extends JFrame {
 
                 String out = selectedSorter.getExporter().getLog();
                 epDemo.setText(out);
+                epDemo.setCaretPosition(0);
+
+                bSave.setEnabled(true);
             }
         });
 
@@ -97,16 +126,46 @@ public class SortWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 taLog.clear();
+                bSave.setEnabled(false);
                 StressTest.stressTest(selectedSorter, taLog);
             }
         });
 
-        // Benchnmark Action
+        // Benchmark Action
         bBenchmark.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 taLog.clear();
+                bSave.setEnabled(false);
                 Benchmark.runBenchmarks(demoSorter.getSorters(), taLog);
+            }
+        });
+
+        // Save benchmark results in html file and open it in browser
+        bSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Exporter exporter = selectedSorter.getExporter();
+                if (exporter == null) {
+                    return;
+                }
+
+                String home = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
+                String filename = home + "/QuicksortOutput.html";
+                FileReadWrite.save(filename, exporter.getLog());
+                taLog.printf("Log saved in %s. Trying to open file in browser\n", filename);
+                try {
+                    Desktop.getDesktop().open(new File(filename));
+                } catch (IOException ignored) {
+                }
+            }
+        });
+
+        tfSelectedArray.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                bSave.setEnabled(false);
             }
         });
     }
