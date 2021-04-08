@@ -1,7 +1,4 @@
-package console;
-
-import utils.Colors;
-import utils.Logger;
+package utils;
 
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;

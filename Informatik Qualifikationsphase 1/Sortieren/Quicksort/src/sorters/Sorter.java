@@ -100,12 +100,12 @@ public abstract class Sorter {
 
     public String debug() {
         quicksort(true);
-        return String.format("Before: %s\nAfter  : %s\nCorrect: %s %s", Arrays.toString(original), Arrays.
-                toString(a), Arrays.toString(sorted), successMark());
+        return String.format("Before: %s\nAfter  : %s\nCorrect: %s %s", Arrays.toString(original), Arrays.toString(a)
+                , Arrays.toString(sorted), successMark());
     }
 
     private String successMark() {
-        return isSuccessful() ? "✔" : "❌";
+        return isSuccessful() ? "✓" : "╳";
     }
 
     public void prepareBenchmark() {

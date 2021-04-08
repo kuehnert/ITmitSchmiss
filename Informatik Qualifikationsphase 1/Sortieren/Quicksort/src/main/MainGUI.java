@@ -1,4 +1,6 @@
-package gui;
+package main;
+
+import gui.SortWindow;
 
 import javax.swing.*;
 

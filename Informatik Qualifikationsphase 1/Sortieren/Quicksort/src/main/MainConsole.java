@@ -1,5 +1,6 @@
-package console;
+package main;
 
+import utils.ConsoleLogger;
 import exporters.ANSIExporter;
 import exporters.HTMLExporter;
 import sorters.Sorter;

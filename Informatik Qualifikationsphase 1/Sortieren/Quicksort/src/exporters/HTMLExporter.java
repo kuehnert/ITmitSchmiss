@@ -11,8 +11,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HTMLExporter extends Exporter {
-    private static final String HEAD_START = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Quicksort</title>\n<style>";
-    private static final String HEAD_END = "</style>\n</head>\n<body><table caption='Quicksort Value Table'>\n";
+    private static final String HEAD_START = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Quicksort</title>\n"
+            + "<style>";
+    private static final String HEAD_END = "</style>\n</head>\n<body>\n";
     private static String styles;
     private final List<DataRow> rows;
 
@@ -100,14 +101,14 @@ public class HTMLExporter extends Exporter {
     }
 
     private String headerRow() {
-        StringBuilder out = new StringBuilder("<thead><tr>");
+        StringBuilder out = new StringBuilder("<table caption='Quicksort Value Table'>\n<thead><tr>");
         int alen = sorter.getArray().length;
 
         for (int i = 0; i < alen; i++) {
             out.append("<th>a[").append(i).append("]</th>");
         }
 
-        return out + "<th>Swaps</th></tr></thead>";
+        return out + "<th>Swaps</th></tr>\n</thead>\n";
     }
 
     private String head() {
@@ -118,7 +119,7 @@ public class HTMLExporter extends Exporter {
     public String getLog() {
         String table = rows.stream().map(Objects::toString).collect(Collectors.joining());
 
-        return head() + headerRow() + "\n<tbody>\n<tr class='partition'>" + table + "</tr></tbody>\n</table></body></html>";
+        return head() + "<h1>" + sorter.getName() + "</h1>" + headerRow() + "\n<tbody>\n<tr class='partition'>" + table + "</tr></tbody>\n</table" + "></body></html>";
     }
 }
 

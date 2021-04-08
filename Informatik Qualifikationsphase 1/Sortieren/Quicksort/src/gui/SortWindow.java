@@ -1,8 +1,8 @@
 package gui;
 
-import console.Benchmark;
-import console.DemoSorter;
-import console.StressTest;
+import main.Benchmark;
+import main.DemoSorter;
+import main.StressTest;
 import exporters.Exporter;
 import exporters.HTMLExporter;
 import sorters.Sorter;
@@ -44,16 +44,22 @@ public class SortWindow extends JFrame {
         setTitle(Vars.TITLE);
         add(pMain);
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            // Fehler macht nix
+        }
+
         // Load font from resources
-        InputStream is = SortWindow.class.getResourceAsStream("Cascadia Code.ttf");
+        InputStream is = SortWindow.class.getResourceAsStream("/CascadiaCode.ttf");
         try {
             Font codeFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            codeFont = codeFont.deriveFont(16.0f);
             epSource.setFont(codeFont);
             epDemo.setFont(codeFont);
             taLog.setFont(codeFont);
         } catch (IOException | FontFormatException e) {
             System.out.println("Unable to load font. Whatever.");
-            // no matter
         }
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -92,6 +98,7 @@ public class SortWindow extends JFrame {
                 selectedSorter = (Sorter) cbSorter.getSelectedItem();
                 String sorterCode = selectedSorter.getCode();
                 epSource.setText(sorterCode);
+                epSource.setCaretPosition(0);
                 bSave.setEnabled(false);
             }
         });

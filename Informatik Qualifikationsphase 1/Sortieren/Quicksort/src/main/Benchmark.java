@@ -1,10 +1,11 @@
-package console;
+package main;
 
 import java.util.Arrays;
 import java.util.List;
 
 import sorters.*;
 import utils.ArrayMaker;
+import utils.ConsoleLogger;
 import utils.Logger;
 
 /**

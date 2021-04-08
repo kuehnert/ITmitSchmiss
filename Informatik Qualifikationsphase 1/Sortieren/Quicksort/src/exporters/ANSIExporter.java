@@ -26,7 +26,7 @@ public class ANSIExporter extends Exporter {
 
     @Override
     public void logPartition() {
-        log += "------------------------------------------------------------------------------------------------\n";
+        log += "\n------------------------------------------------------------------------------------------------";
     }
 
     public void logSwap(int x, int y) {

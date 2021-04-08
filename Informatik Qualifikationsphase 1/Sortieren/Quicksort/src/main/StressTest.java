@@ -1,8 +1,9 @@
-package console;
+package main;
 
 import sorters.Quicksort2;
 import sorters.Sorter;
 import utils.ArrayMaker;
+import utils.ConsoleLogger;
 import utils.Logger;
 
 public class StressTest {

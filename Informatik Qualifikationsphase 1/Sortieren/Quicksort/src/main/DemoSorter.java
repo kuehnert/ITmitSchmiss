@@ -1,9 +1,9 @@
-package console;
+package main;
 
+import exporters.ANSIExporter;
+import exporters.Exporter;
 import sorters.Sorter;
-import utils.ArrayMaker;
-import utils.ClassFinder;
-import utils.Logger;
+import utils.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DemoSorter {
     private List<Sorter> sorters;
-    private Logger logger;
+    private final Logger logger;
 
     public DemoSorter(Logger logger) {
         this.logger = logger;
@@ -19,12 +19,18 @@ public class DemoSorter {
     }
 
     public static void main(String[] args) {
-        Logger l = new ConsoleLogger();
-        DemoSorter show = new DemoSorter(l);
         ArrayMaker arrayMaker = new ArrayMaker();
+        Logger log = new ConsoleLogger();
+        DemoSorter show = new DemoSorter(log);
+        Sorter sortMethod = show.getSorters().get(0);
+        Exporter export = new ANSIExporter(sortMethod);
+        sortMethod.setExporter(export);
+        DemoArray array = arrayMaker.getArrays()[0];
 
-        show.debugArray(show.getSorters().get(0), arrayMaker.getArrays()[0].getArray());
-        l.println("\n\nFiniss!");
+        System.out.println("Zeige Methode " + sortMethod.getName() +  " mit Array " + array + ": ");
+        show.debugArray(sortMethod, array.getArray());
+        System.out.println(export.getLog());
+        log.println("\n\nFiniss!");
     }
 
     public List<Sorter> getSorters() {

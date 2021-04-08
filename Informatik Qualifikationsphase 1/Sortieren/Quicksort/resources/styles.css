@@ -5,6 +5,10 @@ body {
     font-size: 16pt;
 }
 
+h1 {
+    text-align: center;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -33,11 +37,11 @@ td.higher {
 }
 
 td.left::before {
-    content: "→ ";
+    content: "→";
 }
 
 td.right::after {
-    content: " ←";
+    content: "←";
 }
 
 td.outside {
