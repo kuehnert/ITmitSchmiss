@@ -1,5 +1,3 @@
-package main;
-
 import utils.ConsoleLogger;
 import exporters.ANSIExporter;
 import exporters.HTMLExporter;
@@ -95,7 +93,6 @@ public class MainConsole {
                     }
 
                     show.debugArray(sorter, numbers);
-                    logger.print(sorter.getExporter().getLog());
                     break;
                 case '2':
                     sorter = chooseSorter();
